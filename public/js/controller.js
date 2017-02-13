@@ -4,6 +4,7 @@ angular.module('market',[])
 		self.pressed=true;
 		console.log('Controller created beatch');
 		self.carrito=cartService.merca();
+		console.log('mio joder Miguel');
 		console.log(self.carrito.lenght);
 		self.loadData=function(){
 			self.pressed=false;
