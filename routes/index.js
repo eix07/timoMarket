@@ -8,6 +8,7 @@ router.get('/', function(req, res, next) {
 });
 
 router.get('/getData',function(req,res){
+  console.log('data request');
   res.sendFile(path.join(__dirname,'../public','dataParcial.json'));
 });
 

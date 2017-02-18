@@ -5,7 +5,6 @@ angular.module('market',[])
 		console.log('Controller created beatch');
 		self.carrito=cartService.merca();
 		console.log('mio joder Miguel');
-		console.log(self.carrito.lenght);
 		self.loadData=function(){
 			self.pressed=false;
 			self.products=itemService.full();
@@ -18,7 +17,14 @@ angular.module('market',[])
 		self.removeCart=function(p){
 			cartService.remove(p);
 			self.carrito=cartService.merca();
+		};
+		self.getCarrito=function(){
+			return cartService.merca().length;
+		};
+		self.total=function(){
+			return cartService.getTotal();
 		}
+
 	}])
 	.filter('category',[function(){
 		return function(input,cate){
@@ -68,6 +74,13 @@ angular.module('market',[])
 			remove: function(p){
 				var index=cart.indexOf(p);
 				cart.splice(index,1);
+			},
+			getTotal: function(){
+				var total=0;
+				for(var a in cart){
+					total=total+parseInt(cart[a].price);
+				}
+				return total;
 			}
 		};
 	}]);

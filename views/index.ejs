@@ -5,6 +5,7 @@
 	<link rel="shortcut icon" type="image/x-icon" href="images/tomaco.ico" />
 	<link type="text/css" rel="stylesheet" href="css/materialize.min.css"  media="screen,projection"/>
 	<link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+	<link rel="stylesheet" type="text/css" href="css/nouislider.min.css">
 
 	<script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>	
 	<script type="text/javascript" src="/js/materialize.min.js"></script>
@@ -13,20 +14,21 @@
 	<script type="text/javascript" src="/js/angular.min.js"></script>
 	<script type="text/javascript" src="/js/controller.js"></script>
 	<script type="text/javascript" src="/js/start.js"></script>
+	<script type="text/javascript" src="/js/nouislider.min.js"></script>
 	<link rel='stylesheet' href='/css/style.css' />
 </head>
 <body ng-controller='mainCtrl as main'>
-	<nav id="startnav">
+	<nav class="sticky">
 		<div class="orange lighten-2 nav-wrapper">
 			<a href="#!" id="timo" class="brand-logo"><i class="material-icons">thumb_up</i>TimoMarket</a>
 			<a href="#" data-activates="mobile-demo" class="button-collapse"><i class="material-icons">menu</i></a>
 			<ul class="right hide-on-med-and-down">
-				<li><a href="#modal1"><i class="material-icons right">shopping_cart</i>Cart</a></li>
+				<li><a href="#modal1"><i class="material-icons right">shopping_cart</i>Cart<span class="new badge red" ng-bind="main.getCarrito()" ng-show="main.getCarrito()>0"></span></a></li>
 				<li><a href="#"><i class="material-icons right">perm_identity</i>Profile</a></li>
 				<li><a href="#"><i class="material-icons right">input</i>Sign out</a></li>
 			</ul>
 			<ul class="side-nav" id="mobile-demo">
-				<li><a href="#modal1"><i class="material-icons right">shopping_cart</i>Cart</a></li>
+				<li><a href="#modal1"><i class="material-icons right">shopping_cart</i>Cart<span class="new badge red" ng-bind="main.getCarrito()" ng-show="main.getCarrito()>0"></span></a></li>
 				<li><a href="#"><i class="material-icons right">perm_identity</i>Profile</a></li>
 				<li><a href="#"><i class="material-icons right">input</i>Sign out</a></li>
 			</ul>
@@ -35,18 +37,18 @@
 	<div class="parallax-container">
 	<div class="parallax"><img src="images/market.jpg"></div>
 	</div>
-	<div class="section white">
+	<div class="section white" id="white">
 		<h2 id="tit">Products</h2>
 		<center><a id="btnData" class="waves-effect waves-light btn" ng-click="main.loadData()" ng-show="main.pressed"><i class="material-icons left">import_export</i>Load data</a>
 			<div class="nn">
 			<a href="#modalSearch" class="waves-effect waves-light btn" ng-show="!main.pressed"><i class="material-icons left">search</i>Custom Search</a>
 			<a href="#modalBest" class="waves-effect waves-light btn" ng-show="!main.pressed"><i class="material-icons left">trending_up</i>Best Sellers</a>
-			<a class="waves-effect waves-light btn" ng-show="!main.pressed"><i class="material-icons left">cloud</i>button</a>
+			<a href="#modalfilters" class="waves-effect waves-light btn" ng-show="!main.pressed"><i class="material-icons left">star</i>Filters</a>
 			</div>
 		</center>
 
 		<div ng-repeat="data in main.products.categories">
-			<nav>
+			<nav class="navbaar-fixed" data-target="{{data.name}}">
 				<div class="nav-wrapper light-green">
 					<a href="#" id="timo" class="brand-logo"><span ng-bind="data.name | uppercase"></span></a>
 				</div> 
@@ -122,7 +124,7 @@
 			</div>
 		</div>
 		<div class="modal-footer">
-			<a href="#!" class=" modal-action modal-close waves-effect waves-green btn-flat">Got it!</a>
+			<h6>Total: <span ng-bind="main.total()+'.000'"></span></h6><a href="#!" class=" modal-action modal-close waves-effect waves-green btn-flat">Got it!</a>
 		</div>
 	</div>
 	<!-- modal 2 -->
@@ -181,5 +183,36 @@
     		<a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat ">Ok!</a>
     	</div>
     </div>
+    <div id="modalfilters" class="modal modal-fixed-footer">
+    	<div class="modal-content">
+    		<h4>Filters</h4>
+    		<div class="input-field row">
+    			<select>
+    				<option value="" disabled selected>Choose your option</option>
+    				<option value="1">Option 1</option>
+    				<option value="2">Option 2</option>
+    				<option value="3">Option 3</option>
+    			</select>
+    		</div>
+    		<div class="row">
+    			<div class="col s4" ng-repeat="data in main.products.products | priceFilter">
+    				<div class="card">
+    					<div class="card-image">
+    						<img ng-src="{{data.img}}">
+    						<span class="card-title" ng-bind="data.name"></span>
+    						<a class="btn-floating halfway-fab waves-effect waves-light red" onclick="Materialize.toast('Item added!', 4000)" ng-click="main.addCart(data)"><i class="material-icons">add</i></a>
+    					</div>
+    					<div class="card-content">
+    						<h6><b>price:</b>{{data.price}}$</h6>
+    					</div>
+    				</div>
+    			</div>
+    		</div>
+    	</div>
+    	<div class="modal-footer">
+    		<a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat ">Ok!</a>
+    	</div>
+    </div>
+</body>
 </body>
 </html>
