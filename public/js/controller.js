@@ -1,5 +1,5 @@
 angular.module('market',[])
-	.controller('mainCtrl',['itemService','cartService',function(itemService,cartService){
+	.controller('mainCtrl',['itemService','cartService','$window',function(itemService,cartService,$window){
 		var self=this;
 		self.pressed=true;
 		console.log('Controller created beatch');
@@ -10,9 +10,13 @@ angular.module('market',[])
 			self.products=itemService.full();
 		};
 		self.addCart=function(p){
-			cartService.add(p);
-			self.carrito=cartService.merca();
-			console.log(cartService.merca());
+			if(p.available){
+				cartService.add(p);
+				self.carrito=cartService.merca();
+				console.log(cartService.merca());	
+			}else{
+				$window.alert('this product is unavaliable :(');
+			}
 		};
 		self.removeCart=function(p){
 			cartService.remove(p);
@@ -24,7 +28,25 @@ angular.module('market',[])
 		self.total=function(){
 			return cartService.getTotal();
 		}
-
+		self.s1=$window.value1;
+		self.s2=200000;
+		console.log($window.value1);
+		console.log(self.s1);
+	}])
+	.filter('priceFilter',[function(){
+		return function(input,selec1,selec2){
+			var res=[];
+			var s1=parseInt(selec1);
+			var s2=parseInt(selec2);
+			for(var a in input){
+				var c=parseInt(input[a].price)*1000;
+				console.log(c);
+				if(c>=s1&&c<=s2){
+					res.push(input[a]);
+				}
+			}
+			return res;
+		}
 	}])
 	.filter('category',[function(){
 		return function(input,cate){

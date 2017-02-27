@@ -2,10 +2,12 @@
 <html ng-app="market">
 <head>
 	<title>TimoMarket!!</title>
+	<link rel="stylesheet" type="text/css" href="css/nouislider.min.css">
+	<script type="text/javascript" src="./js/nouislider.min.js"></script>
+
 	<link rel="shortcut icon" type="image/x-icon" href="images/tomaco.ico" />
 	<link type="text/css" rel="stylesheet" href="css/materialize.min.css"  media="screen,projection"/>
 	<link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-	<link rel="stylesheet" type="text/css" href="css/nouislider.min.css">
 
 	<script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>	
 	<script type="text/javascript" src="/js/materialize.min.js"></script>
@@ -14,7 +16,7 @@
 	<script type="text/javascript" src="/js/angular.min.js"></script>
 	<script type="text/javascript" src="/js/controller.js"></script>
 	<script type="text/javascript" src="/js/start.js"></script>
-	<script type="text/javascript" src="/js/nouislider.min.js"></script>
+
 	<link rel='stylesheet' href='/css/style.css' />
 </head>
 <body ng-controller='mainCtrl as main'>
@@ -186,16 +188,15 @@
     <div id="modalfilters" class="modal modal-fixed-footer">
     	<div class="modal-content">
     		<h4>Filters</h4>
-    		<div class="input-field row">
-    			<select>
-    				<option value="" disabled selected>Choose your option</option>
-    				<option value="1">Option 1</option>
-    				<option value="2">Option 2</option>
-    				<option value="3">Option 3</option>
-    			</select>
-    		</div>
+    		<div class="sliders" id="sliderr" ng-hide="true"></div>
     		<div class="row">
-    			<div class="col s4" ng-repeat="data in main.products.products | priceFilter">
+    			<div class="col s6">
+    				<h5>From: <input id="selec1" type="number" ng-model="main.s1" ng-model-options="{ updateOn: 'blur' }"></input></h5>
+    			</div>
+    			<div class="col s6">
+    				<h5>to: <input id="selec2" type="number" ng-model="main.s2"></input></h5>
+    			</div>
+    			<div class="col s4" ng-repeat="data in main.products.products | priceFilter:main.s1:main.s2 ">
     				<div class="card">
     					<div class="card-image">
     						<img ng-src="{{data.img}}">
@@ -206,8 +207,9 @@
     						<h6><b>price:</b>{{data.price}}$</h6>
     					</div>
     				</div>
-    			</div>
+    			</div>    			
     		</div>
+    		
     	</div>
     	<div class="modal-footer">
     		<a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat ">Ok!</a>
